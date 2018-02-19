@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-import csv
+import json
 import os
 import argparse
 from configparser import ConfigParser, NoOptionError
@@ -13,7 +13,7 @@ user_home = os.environ.get('HOME')
 default_cfg = '{}/.config/rofi-mopidy-spotify/api.conf'.format(user_home)
 default_cache_dir = '{}/.cache/rofi-mopidy-spotify'.format(user_home)
 default_api_cache = '{}/spotify_api.json'.format(default_cache_dir)
-default_output = '{}/spotify_albums.csv'.format(default_cache_dir)
+default_output = '{}/spotify_albums.json'.format(default_cache_dir)
 
 # Parse command line overrides if given
 parser = argparse.ArgumentParser(description='Spotify album cache store')
@@ -70,24 +70,24 @@ if os.path.exists(output_file):
     os.remove(output_file)
 
 # Function for writing albums from api to file
-def write_albums(results, writer):
+def get_albums(results):
     offset = results['offset']
     count = len(results['items'])
-    print('Saving albums {}-{}'.format(offset, offset + count))
+    print('Collecting albums {}-{}'.format(offset, offset + count))
 
     for item in results['items']:
-        artist = '; '.join(i['name'] for i in item['album']['artists'])
-        name = item['album']['name']
-        uri = item['album']['uri']
-        date_added = item['added_at']
-        writer.writerow([artist, name, uri, date_added])
+        yield {'artist': ', '.join(i['name'] for i in item['album']['artists']),
+               'name': item['album']['name'],
+               'uri': item['album']['uri'],
+               'date_added': item['added_at']}
 
 sp = spotipy.Spotify(auth=token)
 results = sp.current_user_saved_albums(limit=50)
 with open(output_file, 'w') as f:
-    print('Writing albums to {}'.format(output_file))
-    writer = csv.writer(f)
-    write_albums(results, writer)
+    #  writer = csv.writer(f)
+    albums = [i for i in get_albums(results)]
     while results['next']:
         results = sp.next(results)
-        write_albums(results, writer)
+        albums += [i for i in get_albums(results)]
+    print('Writing albums to {}'.format(output_file))
+    json.dump(albums, f)
