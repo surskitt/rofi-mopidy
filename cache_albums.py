@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser(description='Spotify album cache store')
 parser.add_argument('-c', dest='config', default=default_cfg,
                     help='config file')
 parser.add_argument('-C', dest='cache', default=default_api_cache,
-                    help='api cache dir')
+                    help='api cache file')
 parser.add_argument('-o', dest='output', default=default_output,
                     help='album output file')
 args = parser.parse_args()
