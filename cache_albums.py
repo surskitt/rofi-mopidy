@@ -75,9 +75,9 @@ def get_albums(results):
 
     for item in results['items']:
         yield {'artist': ', '.join(i['name'] for i in item['album']['artists']),
-               'name': item['album']['name'],
+               'album': item['album']['name'],
                'uri': item['album']['uri'],
-               'date_added': item['added_at']}
+               'date': item['added_at']}
 
 sp = spotipy.Spotify(auth=token)
 results = sp.current_user_saved_albums(limit=50)
