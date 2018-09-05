@@ -10,7 +10,7 @@ fsj = sorted(fsj, key=lambda x: x['mtime'], reverse=True)
 
 albums = '\n'.join('{} - {}'.format(i['artist'], i['album']) for i in fsj)
 
-rofi_cmd = 'rofi -dmenu -p Music -i -no-custom -format i'.split()
+rofi_cmd = 'rofi -no-show-icons -dmenu -p Music -i -no-custom -format i'.split()
 caller = Popen(args=rofi_cmd, stdin=PIPE, stdout=PIPE)
 stdout, stderr = caller.communicate(input=albums.encode())
 

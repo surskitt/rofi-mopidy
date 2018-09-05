@@ -39,7 +39,7 @@ def get_uri(j, index):
 
 # Call rofi, returning output and return code
 def call_rofi(albums):
-    rofi_cmd = 'rofi -dmenu -p Spotify -i -no-custom -format i'.split()
+    rofi_cmd = 'rofi -no-show-icons -dmenu -p Spotify -i -no-custom -format i'.split()
     caller = Popen(args=rofi_cmd, stdin=PIPE, stdout=PIPE)
 
     stdout, stderr = caller.communicate(input=albums.encode())
