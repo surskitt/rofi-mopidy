@@ -33,6 +33,7 @@ grouper = itemgetter('albumartist', 'album')
 gb = [(k, list(g)) for k, g in groupby(sorted(so, key=grouper), grouper)]
 sa = [{'artist': k[0],
        'album': k[1],
+       'type': 'file',
        'mtime': max(i['mtime'] for i in g),
        'tracks': [i for i in g]} for k, g in gb]
 
