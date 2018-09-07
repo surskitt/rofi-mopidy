@@ -51,7 +51,7 @@ try:
         'client_secret': config.get('api', 'client_secret'),
         'redirect_uri': config.get('api', 'redirect_uri'),
         'scope': 'user-library-read',
-        #'cache_path': api_cache
+        # 'cache_path': api_cache
     }
 except NoOptionError as err:
     print('Error: Missing values in api.conf', file=sys.stderr)
@@ -68,21 +68,26 @@ if not token:
 if os.path.exists(output):
     os.remove(output)
 
-def results_gen(r):
-    while r:
-        for i in r['items']:
-            yield i
-        r = sp.next(r)
+
+def make_results_gen(sp):
+    def gen(r):
+        while r:
+            for i in r['items']:
+                yield i
+            r = sp.next(r)
+    return gen
+
 
 def dt_to_mtime(dt):
     pattern = '%Y-%m-%dT%H:%M:%SZ'
 
     return int(time.mktime(time.strptime(dt, pattern)))
 
+
 def track_to_dict(t, albumartist, album, mtime):
     artist = ', '.join(i['name'] for i in t['artists'])
     track = float('{}.{}'.format(t['disc_number'], t['track_number']))
-    title =  t['name']
+    title = t['name']
     uri = t['uri']
     mtime = mtime
 
@@ -94,6 +99,7 @@ def track_to_dict(t, albumartist, album, mtime):
             'uri': uri,
             'mtime': mtime,
             'type': 'spotify'}
+
 
 def album_to_dict(a):
     aa = a['album']
@@ -111,8 +117,11 @@ def album_to_dict(a):
             'type': 'spotify',
             'uri': uri}
 
+
 sp = spotipy.Spotify(auth=token)
 results = sp.current_user_saved_albums(limit=50)
+
+results_gen = make_results_gen(sp)
 
 albums = [album_to_dict(i) for i in results_gen(results)]
 
