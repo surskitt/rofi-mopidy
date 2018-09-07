@@ -18,7 +18,7 @@ def write_albums(cache_dir, filename, *albums):
 
     output = '{}/{}.json'.format(cache_dir, filename)
     with open(output, 'w') as f:
-        json.dump(aalbums, f)
+        json.dump(aalbums, f, indent=4)
 
 
 if __name__ == '__main__':
