@@ -9,14 +9,14 @@ import collectors
 import auth
 
 
-def write_albums(cache_dir, *albums):
+def write_albums(cache_dir, filename, *albums):
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
 
     # flatten all albums lists into one list for writing
     aalbums = [i for s in albums for i in s]
 
-    output = '{}/albums.json'.format(cache_dir)
+    output = '{}/{}.json'.format(cache_dir, filename)
     with open(output, 'w') as f:
         json.dump(aalbums, f)
 
@@ -31,7 +31,5 @@ if __name__ == '__main__':
         sp = auth.get_spotify_client(**spotify_auth_args)
         sc = collectors.SpotifyCollector(sp)
         spotify_albums = sc.collect()
-    else:
-        spotify_albums = []
 
-    write_albums(opts.cache_dir, spotify_albums)
+        write_albums(opts.cache_dir, 'spotify', spotify_albums)
