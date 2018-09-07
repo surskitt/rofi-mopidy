@@ -3,23 +3,13 @@
 import sys
 import json
 import os
-import argparse
 from configparser import ConfigParser, NoOptionError
 import spotipy
 import spotipy.util
 import collectors
+import options
 
-# Set defaults for config and output
-conf_dir = os.path.expanduser('~/.config/rofi-mopidy-spotify')
-cache_dir = os.path.expanduser('~/.cache/rofi-mopidy-spotify')
-
-# Parse command line overrides if given
-parser = argparse.ArgumentParser(description='Spotify album cache store')
-parser.add_argument('-c', dest='conf_dir', default=conf_dir,
-                    help='config dir')
-parser.add_argument('-C', dest='cache_dir', default=cache_dir,
-                    help='cache dir')
-args = parser.parse_args()
+args = options.args
 
 for i in (args.conf_dir, args.cache_dir):
     if not os.path.exists(i):
