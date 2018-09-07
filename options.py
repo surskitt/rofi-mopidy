@@ -16,7 +16,7 @@ def get_options():
     # general options
     p.add('-c', '--config', is_config_file=True, help='config file path')
     p.add('--cache_dir', '-C', default=cache_dir, help='app cache dir')
-    p.add('--source', '-s', action='append',
+    p.add('--source', '-s', action='append', required=True,
           help='different sources to scan/display')
     p.add('--mode', '-m', default='albums')
     p.add('--use_icons', '-i', action='store_true',
