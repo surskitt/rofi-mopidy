@@ -19,7 +19,7 @@ def get_options():
     p.add('--source', '-s', action='append', required=True,
           choices=['files', 'spotify'],
           help='different sources to scan/display')
-    p.add('--mode', '-m', default='albums')
+    p.add('--mode', '-m', choices=['albums', 'songs'], default='albums')
     p.add('--refresh', '-r', action='store_true',
           help='refresh album cache')
     p.add('--use_icons', '-i', action='store_true',
