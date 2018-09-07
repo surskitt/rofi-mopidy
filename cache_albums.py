@@ -1,24 +1,12 @@
 #!/usr/bin/env python
 
 # python stdlib
-import json
 import os
 # internal packages
 import options
+import utils
 import collectors
 import auth
-
-
-def write_albums(cache_dir, filename, *albums):
-    if not os.path.exists(cache_dir):
-        os.makedirs(cache_dir)
-
-    # flatten all albums lists into one list for writing
-    aalbums = [i for s in albums for i in s]
-
-    output = '{}/{}.json'.format(cache_dir, filename)
-    with open(output, 'w') as f:
-        json.dump(aalbums, f, indent=4)
 
 
 if __name__ == '__main__':
@@ -32,10 +20,10 @@ if __name__ == '__main__':
         sc = collectors.spotify.SpotifyCollector(sp)
         spotify_albums = sc.collect()
 
-        write_albums(opts.cache_dir, 'spotify', spotify_albums)
+        utils.write_albums(opts.cache_dir, 'spotify', spotify_albums)
 
     if 'files' in opts.source:
         files_dir = os.path.expanduser(opts.files_dir)
         file_albums = collectors.files.collect(files_dir)
 
-        write_albums(opts.cache_dir, 'files', file_albums)
+        utils.write_albums(opts.cache_dir, 'files', file_albums)
