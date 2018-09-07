@@ -16,7 +16,7 @@ def write_albums(cache_dir, *albums):
     # flatten all albums lists into one list for writing
     aalbums = [i for s in albums for i in s]
 
-    output = '{}/albums.json'.format(options.cache_dir)
+    output = '{}/albums.json'.format(cache_dir)
     with open(output, 'w') as f:
         json.dump(aalbums, f)
 
