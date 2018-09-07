@@ -10,22 +10,15 @@ import collectors
 import options
 
 args = options.args
+config = options.config
 
 for i in (args.conf_dir, args.cache_dir):
     if not os.path.exists(i):
         os.makedirs(i)
 
-cfgfile = '{}/api.conf'.format(args.conf_dir)
+#  cfgfile = '{}/api.conf'.format(args.conf_dir)
 output = '{}/spotify_albums.json'.format(args.cache_dir)
 api_cache = '{}/spotify_api.json'.format(args.cache_dir)
-
-# Open config file
-config = ConfigParser()
-try:
-    config.readfp(open(cfgfile))
-except FileNotFoundError:
-    print('Error: {} not found'.format(cfgfile), file=sys.stderr)
-    sys.exit(1)
 
 # Parse config file, reading values into dict
 try:
