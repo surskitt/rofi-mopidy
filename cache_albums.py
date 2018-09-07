@@ -4,8 +4,8 @@
 import json
 import os
 # internal packages
-import collectors
 import options
+import collectors
 import auth
 
 
@@ -24,11 +24,14 @@ def write_albums(cache_dir, *albums):
 if __name__ == '__main__':
     opts = options.get_options()
 
-    spotify_auth_args = {'username': opts.spotify_username,
-                         'client_id': opts.spotify_client_id,
-                         'client_secret': opts.spotify_client_secret}
-    sp = auth.get_spotify_client(**spotify_auth_args)
-    sc = collectors.SpotifyCollector(sp)
-    spotify_albums = sc.collect()
+    if 'spotify' in opts.source:
+        spotify_auth_args = {'username': opts.spotify_username,
+                             'client_id': opts.spotify_client_id,
+                             'client_secret': opts.spotify_client_secret}
+        sp = auth.get_spotify_client(**spotify_auth_args)
+        sc = collectors.SpotifyCollector(sp)
+        spotify_albums = sc.collect()
+    else:
+        spotify_albums = []
 
-    write_albums(spotify_albums)
+    write_albums(opts.cache_dir, spotify_albums)
