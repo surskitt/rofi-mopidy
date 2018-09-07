@@ -19,7 +19,8 @@ def get_options():
     p.add('--source', '-s', action='append', required=True,
           choices=['files', 'spotify'],
           help='different sources to scan/display')
-    p.add('--mode', '-m', choices=['albums', 'songs'], default='albums')
+    p.add('--mode', '-m', choices=['albums', 'songs'], default='albums',
+          help='whether to show albums or songs in rofi')
     p.add('--refresh', '-r', action='store_true',
           help='refresh album cache')
     p.add('--use_icons', '-i', action='store_true',
@@ -34,4 +35,11 @@ def get_options():
     p.add('--files-dir', help='music files directory')
 
     options = p.parse()
+
+    spotify_options = (options.spotify_username,
+                       options.spotify_client_id,
+                       options.spotify_client_secret)
+    if 'spotify' in options.source and not all(spotify_options):
+        p.error('use of spotify source requires api options to be set')
+
     return options
