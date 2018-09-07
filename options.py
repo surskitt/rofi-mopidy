@@ -14,9 +14,10 @@ def get_options():
     p = configargparse.Parser(default_config_files=[conf_files])
 
     # general options
-    p.add('-c', '--config', is_config_file=True, help='config file path')
+    p.add('--config', '-c', is_config_file=True, help='config file path')
     p.add('--cache_dir', '-C', default=cache_dir, help='app cache dir')
     p.add('--source', '-s', action='append', required=True,
+          choices=['files', 'spotify'],
           help='different sources to scan/display')
     p.add('--mode', '-m', default='albums')
     p.add('--refresh', '-r', action='store_true',
