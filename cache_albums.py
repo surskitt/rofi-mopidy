@@ -33,3 +33,9 @@ if __name__ == '__main__':
         spotify_albums = sc.collect()
 
         write_albums(opts.cache_dir, 'spotify', spotify_albums)
+
+    if 'files' in opts.source:
+        files_dir = os.path.expanduser(opts.files_dir)
+        file_albums = collectors.files_collect(files_dir)
+
+        write_albums(opts.cache_dir, 'files', file_albums)
