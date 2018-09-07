@@ -22,11 +22,11 @@ def write_albums(cache_dir, *albums):
 
 
 if __name__ == '__main__':
-    options = options.get_options()
+    opts = options.get_options()
 
-    spotify_auth_args = {'username': options.spotify_username,
-                         'client_id': options.spotify_client_id,
-                         'client_secret': options.spotify_client_secret}
+    spotify_auth_args = {'username': opts.spotify_username,
+                         'client_id': opts.spotify_client_id,
+                         'client_secret': opts.spotify_client_secret}
     sp = auth.get_spotify_client(**spotify_auth_args)
     sc = collectors.SpotifyCollector(sp)
     spotify_albums = sc.collect()
