@@ -10,8 +10,8 @@ import auth
 
 
 def write_albums(cache_dir, *albums):
-    if not os.path.exists(options.cache_dir):
-        os.makedirs(options.cache_dir)
+    if not os.path.exists(cache_dir):
+        os.makedirs(cache_dir)
 
     # flatten all albums lists into one list for writing
     aalbums = [i for s in albums for i in s]
