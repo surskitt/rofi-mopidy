@@ -119,11 +119,13 @@ def album_to_dict(a):
 
 
 sp = spotipy.Spotify(auth=token)
-results = sp.current_user_saved_albums(limit=50)
 
-results_gen = make_results_gen(sp)
+def collect_albums(sp):
+    results = sp.current_user_saved_albums(limit=50)
+    results_gen = make_results_gen(sp)
+    albums = [album_to_dict(i) for i in results_gen(results)]
 
-albums = [album_to_dict(i) for i in results_gen(results)]
+albums = collect_albums(sp)
 
 with open(output, 'w') as f:
     json.dump(albums, f)
