@@ -3,7 +3,6 @@
 import sys
 import json
 import os
-from configparser import ConfigParser, NoOptionError
 import spotipy
 import spotipy.util
 import collectors
