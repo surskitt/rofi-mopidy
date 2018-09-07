@@ -4,9 +4,6 @@
 import sys
 import json
 import os
-# pip installed deps
-import spotipy
-import spotipy.util
 # packages
 import collectors
 import options
