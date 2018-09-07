@@ -1,2 +1,2 @@
-from .spotifycollector import SpotifyCollector
-from .filescollector import files_collect
+import collectors.spotify
+import collectors.files
