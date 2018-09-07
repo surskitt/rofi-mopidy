@@ -1,0 +1,8 @@
+certifi==2018.8.24
+chardet==3.0.4
+ConfigArgParse==0.13.0
+idna==2.7
+requests==2.19.1
+spotipy==2.4.4
+tinytag==0.18.0
+urllib3==1.23
