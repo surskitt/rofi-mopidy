@@ -1,2 +1,1 @@
-import options
-from .spotifyauth import sp
+from .spotifyauth import get_spotify_client

@@ -4,23 +4,31 @@
 import sys
 import json
 import os
-# packages
+# internal packages
 import collectors
 import options
 import auth
 
-args = options.args
-config = options.config
+#  if not os.path.exists(args.cache_dir):
+    #  os.makedirs(args.cache_dir)
 
-for i in (args.conf_dir, args.cache_dir):
-    if not os.path.exists(i):
-        os.makedirs(i)
+if __name__ == '__main__':
+    args = options.args
+    config = options.config
 
-output = '{}/spotify_albums.json'.format(args.cache_dir)
+    try:
+        username = config.get('api', 'username')
+        client_id = config.get('api', 'client_id')
+        client_secret = config.get('api', 'client_secret')
+    except NoOptionError as err:
+        print('Error: Missing values in api.conf', file=sys.stderr)
+        print(err, file=sys.stderr)
+        sys.exit(1)
 
-sp = auth.sp
-sc = collectors.SpotifyCollector(sp)
-spotify_albums = sc.collect()
+    sp = auth.get_spotify_client(username, client_id, client_secret)
+    sc = collectors.SpotifyCollector(sp)
+    spotify_albums = sc.collect()
 
-with open(output, 'w') as f:
-    json.dump(spotify_albums, f)
+    output = '{}/spotify_albums.json'.format(args.cache_dir)
+    with open(output, 'w') as f:
+        json.dump(spotify_albums, f)
