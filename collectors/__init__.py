@@ -1,0 +1,1 @@
+from collectors.spotifycollector import SpotifyCollector
