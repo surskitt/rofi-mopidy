@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 # python stdlib
-import sys
 import json
 import os
 # internal packages
@@ -9,26 +8,27 @@ import collectors
 import options
 import auth
 
-#  if not os.path.exists(args.cache_dir):
-    #  os.makedirs(args.cache_dir)
+
+def write_albums(cache_dir, *albums):
+    if not os.path.exists(options.cache_dir):
+        os.makedirs(options.cache_dir)
+
+    # flatten all albums lists into one list for writing
+    aalbums = [i for s in albums for i in s]
+
+    output = '{}/albums.json'.format(options.cache_dir)
+    with open(output, 'w') as f:
+        json.dump(aalbums, f)
+
 
 if __name__ == '__main__':
-    args = options.args
-    config = options.config
+    options = options.get_options()
 
-    try:
-        username = config.get('api', 'username')
-        client_id = config.get('api', 'client_id')
-        client_secret = config.get('api', 'client_secret')
-    except NoOptionError as err:
-        print('Error: Missing values in api.conf', file=sys.stderr)
-        print(err, file=sys.stderr)
-        sys.exit(1)
-
-    sp = auth.get_spotify_client(username, client_id, client_secret)
+    spotify_auth_args = {'username': options.spotify_username,
+                         'client_id': options.spotify_client_id,
+                         'client_secret': options.spotify_client_secret}
+    sp = auth.get_spotify_client(**spotify_auth_args)
     sc = collectors.SpotifyCollector(sp)
     spotify_albums = sc.collect()
 
-    output = '{}/spotify_albums.json'.format(args.cache_dir)
-    with open(output, 'w') as f:
-        json.dump(spotify_albums, f)
+    write_albums(spotify_albums)
