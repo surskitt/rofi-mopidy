@@ -10,30 +10,24 @@ import spotipy.util
 import time
 
 # Set defaults for config and output
-cfgfile = os.path.expanduser('~/.config/rofi-mopidy-spotify/api.conf')
-api_cache = os.path.expanduser('~/.cache/rofi-mopidy-spotify/spotify_api.json')
-output = os.path.expanduser('~/.cache/rofi-mopidy-spotify/spotify_albums.json')
+conf_dir = os.path.expanduser('~/.config/rofi-mopidy-spotify')
+cache_dir = os.path.expanduser('~/.cache/rofi-mopidy-spotify')
 
 # Parse command line overrides if given
 parser = argparse.ArgumentParser(description='Spotify album cache store')
-parser.add_argument('-c', dest='cfgfile', default=cfgfile,
-                    help='config file')
-parser.add_argument('-C', dest='api_cache', default=api_cache,
-                    help='api cache file')
-parser.add_argument('-o', dest='output', default=output,
-                    help='album output file')
+parser.add_argument('-c', dest='conf_dir', default=conf_dir,
+                    help='config dir')
+parser.add_argument('-C', dest='cache_dir', default=cache_dir,
+                    help='cache dir')
 args = parser.parse_args()
-cfgfile = args.cfgfile
-api_cache = args.api_cache
-output = args.output
 
-# Just in case cache dir does not exist, create it
-if not os.path.exists(os.path.dirname(api_cache)):
-    os.makedirs(os.path.dirname(api_cache))
+for i in (args.conf_dir, args.cache_dir):
+    if not os.path.exists(i):
+        os.makedirs(i)
 
-# Just in case output dir does not exist, create it
-if not os.path.exists(os.path.dirname(output)):
-    os.makedirs(os.path.dirname(output))
+cfgfile = '{}/api.conf'.format(args.conf_dir)
+output = '{}/spotify_albums.json'.format(args.cache_dir)
+api_cache = '{}/spotify_api.json'.format(args.cache_dir)
 
 # Open config file
 config = ConfigParser()
@@ -51,7 +45,6 @@ try:
         'client_secret': config.get('api', 'client_secret'),
         'redirect_uri': config.get('api', 'redirect_uri'),
         'scope': 'user-library-read',
-        # 'cache_path': api_cache
     }
 except NoOptionError as err:
     print('Error: Missing values in api.conf', file=sys.stderr)
@@ -69,63 +62,63 @@ if os.path.exists(output):
     os.remove(output)
 
 
-def make_results_gen(sp):
-    def gen(r):
+class SpotifyCollector():
+    def __init__(self, sp):
+        self.sp = sp
+
+
+    def __results_gen(self, r):
         while r:
             for i in r['items']:
                 yield i
             r = sp.next(r)
-    return gen
 
+    def __dt_to_mtime(self, dt):
+        pattern = '%Y-%m-%dT%H:%M:%SZ'
 
-def dt_to_mtime(dt):
-    pattern = '%Y-%m-%dT%H:%M:%SZ'
+        return int(time.mktime(time.strptime(dt, pattern)))
 
-    return int(time.mktime(time.strptime(dt, pattern)))
+    def album_to_dict(self, a):
+        aa = a['album']
+        artist = ', '.join(i['name'] for i in aa['artists'])
+        album = aa['name']
+        mtime = self.__dt_to_mtime(a['added_at'])
+        tracks = [self.track_to_dict(i, artist, album, mtime)
+                  for i in self.__results_gen(aa['tracks'])]
+        uri = aa['uri']
 
+        return {'artist': artist,
+                'album': album,
+                'mtime': mtime,
+                'tracks': tracks,
+                'type': 'spotify',
+                'uri': uri}
 
-def track_to_dict(t, albumartist, album, mtime):
-    artist = ', '.join(i['name'] for i in t['artists'])
-    track = float('{}.{}'.format(t['disc_number'], t['track_number']))
-    title = t['name']
-    uri = t['uri']
-    mtime = mtime
+    def track_to_dict(self, t, albumartist, album, mtime):
+        artist = ', '.join(i['name'] for i in t['artists'])
+        track = float('{}.{}'.format(t['disc_number'], t['track_number']))
+        title = t['name']
+        uri = t['uri']
+        mtime = mtime
 
-    return {'artist': artist,
-            'albumartist': albumartist,
-            'album': album,
-            'track': track,
-            'title': title,
-            'uri': uri,
-            'mtime': mtime,
-            'type': 'spotify'}
+        return {'artist': artist,
+                'albumartist': albumartist,
+                'album': album,
+                'track': track,
+                'title': title,
+                'uri': uri,
+                'mtime': mtime,
+                'type': 'spotify'}
 
+    def collect(self):
+        results = sp.current_user_saved_albums(limit=50)
+        albums = [self.album_to_dict(i) for i in self.__results_gen(results)]
 
-def album_to_dict(a):
-    aa = a['album']
-    artist = ', '.join(i['name'] for i in aa['artists'])
-    album = aa['name']
-    mtime = dt_to_mtime(a['added_at'])
-    tracks = [track_to_dict(i, artist, album, mtime)
-              for i in results_gen(aa['tracks'])]
-    uri = aa['uri']
-
-    return {'artist': artist,
-            'album': album,
-            'mtime': mtime,
-            'tracks': tracks,
-            'type': 'spotify',
-            'uri': uri}
-
+        return albums
 
 sp = spotipy.Spotify(auth=token)
-
-def collect_albums(sp):
-    results = sp.current_user_saved_albums(limit=50)
-    results_gen = make_results_gen(sp)
-    albums = [album_to_dict(i) for i in results_gen(results)]
-
-albums = collect_albums(sp)
+sc = SpotifyCollector(sp)
+spotify_albums = sc.collect()
 
 with open(output, 'w') as f:
-    json.dump(albums, f)
+    json.dump(spotify_albums, f)
