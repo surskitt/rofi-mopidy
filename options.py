@@ -26,15 +26,18 @@ def get_options():
     p.add('--use_icons', '-i', action='store_true',
           help='use nerdfont icons in rofi')
 
+    # files source options
+    p.add('--files_dir', help='music files directory')
+
     # spotify source options
     p.add('--spotify_username', help='spotify username')
     p.add('--spotify_client_id', help='spotify client id')
     p.add('--spotify_client_secret', help='spotify secret')
 
-    # files source options
-    p.add('--files-dir', help='music files directory')
-
     options = p.parse()
+
+    if 'files' in options.source and not options.files_dir:
+        p.error('use of files source requires files_dir to be set')
 
     spotify_options = (options.spotify_username,
                        options.spotify_client_id,
