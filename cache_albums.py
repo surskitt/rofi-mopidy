@@ -19,14 +19,12 @@ for i in (args.conf_dir, args.cache_dir):
     if not os.path.exists(i):
         os.makedirs(i)
 
-#  cfgfile = '{}/api.conf'.format(args.conf_dir)
 output = '{}/spotify_albums.json'.format(args.cache_dir)
 
 # If the output file already exists, delete it
 if os.path.exists(output):
     os.remove(output)
 
-#  sp = spotipy.Spotify(auth=token)
 sp = auth.sp
 sc = collectors.SpotifyCollector(sp)
 spotify_albums = sc.collect()
