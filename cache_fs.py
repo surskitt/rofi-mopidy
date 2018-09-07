@@ -6,6 +6,7 @@ from itertools import groupby
 from operator import itemgetter
 import json
 import urllib.parse
+import sys
 
 
 def listfiles(directory, exts):
@@ -22,7 +23,8 @@ songs = [(TinyTag.get(f), f) for f in musicfiles]
 so = [{'artist': s.artist,
        'albumartist': s.albumartist or s.artist,
        'album': s.album,
-       'track': int(s.track) if (s.track and s.track.isdigit()) else 0,
+       'track': int(''.join(i for i in ((s.disc or '') + s.track)
+                    if i.isdigit())[-3:]),
        'title': s.title,
        'uri': 'file://{}'.format(urllib.parse.quote(f)),
        'mtime': os.path.getmtime(f),
