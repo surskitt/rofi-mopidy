@@ -28,9 +28,13 @@ def files_handler(opts):
 if __name__ == '__main__':
     opts = options.get_options()
 
-    handlers = {'spotify': spotify_handler, 'files': files_handler}
+    if options.refresh:
+        handlers = {'spotify': spotify_handler, 'files': files_handler}
 
-    albums_dict = {k: handlers[k](opts) for k in opts.source}
+        albums_dict = {k: handlers[k](opts) for k in opts.source}
 
-    for k, v in albums_dict.items():
-        utils.write_albums(opts.cache_dir, k, v)
+        for k, v in albums_dict.items():
+            utils.write_albums(opts.cache_dir, k, v)
+    else:
+        albums_dict = {k: utils.load_albums(opts.cache_dir, k)
+                       for k in opts.source}
