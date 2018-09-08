@@ -14,6 +14,7 @@ def write_albums(cache_dir, filename, *albums):
 
 
 def load_albums(cache_dir, filename):
-    output = '{}/{}.json'.format(cache_dir, filename)
-    with open(input) as f:
-        json.load(f)
+    iput = '{}/{}.json'.format(cache_dir, filename)
+    with open(iput) as f:
+        albums = json.load(f)
+    return albums
