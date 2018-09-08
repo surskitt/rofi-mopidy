@@ -23,6 +23,9 @@ def get_options():
           help='whether to show albums or songs in rofi')
     p.add('--refresh', '-r', action='store_true',
           help='refresh album cache')
+    p.add('--sorting', required=True,
+          choices=['mtime', 'artist', 'album'], default='mtime',
+          help='key to sort rofi listing on')
     p.add('--use_icons', '-i', action='store_true',
           help='use nerdfont icons in rofi')
 
