@@ -28,7 +28,7 @@ def files_handler(opts):
 if __name__ == '__main__':
     opts = options.get_options()
 
-    if options.refresh:
+    if opts.refresh:
         handlers = {'spotify': spotify_handler, 'files': files_handler}
 
         albums_dict = {k: handlers[k](opts) for k in opts.source}
