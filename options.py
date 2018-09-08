@@ -21,7 +21,7 @@ def get_options():
           help='different sources to scan/display')
     p.add('--mode', '-m', choices=['albums', 'songs'], default='albums',
           help='whether to show albums or songs in rofi')
-    p.add('--refresh', '-r', action='store_true',
+    p.add('--refresh', '-r', action='store_true', default=False,
           help='refresh album cache')
     p.add('--sorting', required=True,
           choices=['mtime', 'artist', 'album'], default='mtime',
