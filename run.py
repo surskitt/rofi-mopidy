@@ -38,3 +38,5 @@ if __name__ == '__main__':
     else:
         albums_dict = {k: utils.load_albums(opts.cache_dir, k)
                        for k in opts.source}
+
+    albums = [i for s in albums_dict.values() for i in s]
