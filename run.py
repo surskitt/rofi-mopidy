@@ -8,6 +8,7 @@ import utils
 import collectors
 import auth
 
+
 def spotify_handler(opts):
     spotify_auth_args = {'username': opts.spotify_username,
                          'client_id': opts.spotify_client_id,
@@ -24,8 +25,7 @@ def files_handler(opts):
 
     return file_albums
 
-
-if __name__ == '__main__':
+def main():
     opts = options.get_options()
 
     if opts.refresh:
@@ -40,3 +40,6 @@ if __name__ == '__main__':
                        for k in opts.source}
 
     albums = [i for s in albums_dict.values() for i in s]
+
+if __name__ == '__main__':
+    main()
