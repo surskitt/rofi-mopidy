@@ -2,7 +2,8 @@ certifi==2018.8.24
 chardet==3.0.4
 ConfigArgParse==0.13.0
 idna==2.7
-python-rofi==1.0.1
+python-mpd2==1.0.0
+-e git+https://github.com/bcbnz/python-rofi.git@d20b3a2ba4ba1b294b002f25a8fb526c5115d0d4#egg=python_rofi
 requests==2.19.1
 spotipy==2.4.4
 tinytag==0.18.0
