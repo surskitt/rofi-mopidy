@@ -23,7 +23,7 @@ def get_options():
           help='whether to show albums or songs in rofi')
     p.add('--refresh', '-r', action='store_true', default=False,
           help='refresh album cache')
-    p.add('--sorting', required=True,
+    p.add('--sorting', 
           choices=['mtime', 'artist', 'album', 'title'], default='title',
           help='key to sort rofi listing on')
     p.add('--reverse', action='store_true', default=False,
