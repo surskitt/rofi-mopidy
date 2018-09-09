@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 
 def write_albums(cache_dir, filename, *albums):
     if not os.path.exists(cache_dir):
@@ -15,6 +16,11 @@ def write_albums(cache_dir, filename, *albums):
 
 def load_albums(cache_dir, filename):
     iput = '{}/{}.json'.format(cache_dir, filename)
-    with open(iput) as f:
-        albums = json.load(f)
+    try:
+        with open(iput) as f:
+            albums = json.load(f)
+    except FileNotFoundError:
+        print('ERROR: {} cache not found, use -r to create'.format(filename),
+              file=sys.stderr)
+        sys.exit(1)
     return albums
