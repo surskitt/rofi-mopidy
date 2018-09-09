@@ -23,9 +23,9 @@ def spotify_handler(opts):
 
     return spotify_albums
 
-def files_handler(opts):
-    files_dir = os.path.expanduser(opts.files_dir)
-    file_albums = collectors.files.collect(files_dir)
+def local_handler(opts):
+    local_dir = os.path.expanduser(opts.local_dir)
+    file_albums = collectors.local.collect(local_dir)
 
     return file_albums
 
@@ -73,7 +73,7 @@ def main():
     opts = options.get_options()
 
     if opts.refresh:
-        handlers = {'spotify': spotify_handler, 'files': files_handler}
+        handlers = {'spotify': spotify_handler, 'local': local_handler}
 
         albums_dict = {k: handlers[k](opts) for k in opts.source}
 
@@ -91,14 +91,20 @@ def main():
         music = [i for s in music for i in s['tracks']]
     music = sorted(music, key=lambda x: x[opts.sorting], reverse=opts.reverse)
 
-    index, key = rofi_handler(music, opts.source, opts.use_icons)
+    show_menu = True
+    index = 0
+    while show_menu:
+        index, key = rofi_handler(music, opts.source, opts.use_icons, index)
 
-    if index > -1:
-        selection = music[index]
-        if key in (0, 2):
-            mopidy_handler(selection, opts, 'add')
-        else:
-            mopidy_handler(selection, opts, 'insert')
+        if index > -1:
+            selection = music[index]
+            if key in (0, 2):
+                mopidy_handler(selection, opts, 'add')
+            else:
+                mopidy_handler(selection, opts, 'insert')
+
+        if key in (-1, 0, 1):
+            show_menu = False
 
 
 if __name__ == '__main__':

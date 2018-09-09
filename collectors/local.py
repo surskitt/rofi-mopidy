@@ -41,8 +41,8 @@ def group_songs(sl):
 
     return albums
 
-def collect(files_dir):
-    musicfiles = listfiles(files_dir, ['flac', 'mp3'])
+def collect(local_dir):
+    musicfiles = listfiles(local_dir, ['flac', 'mp3'])
     song_objects = [(TinyTag.get(f), f) for f in musicfiles]
     songs = [song_to_dict(s, f) for s, f in song_objects]
     albums = group_songs(songs)

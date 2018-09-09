@@ -17,7 +17,7 @@ def get_options():
     p.add('--config', '-c', is_config_file=True, help='config file path')
     p.add('--cache_dir', '-C', default=cache_dir, help='app cache dir')
     p.add('--source', '-s', action='append', required=True,
-          choices=['files', 'spotify'],
+          choices=['local', 'spotify'],
           help='different sources to scan/display')
     p.add('--mode', '-m', choices=['albums', 'songs'], default='albums',
           help='whether to show albums or songs in rofi')
@@ -29,8 +29,8 @@ def get_options():
     p.add('--reverse', action='store_true', default=False,
           help='sort rofi entries in reverse')
 
-    # files source options
-    p.add('--files_dir', help='music files directory')
+    # local source options
+    p.add('--local_dir', help='local music directory')
 
     # spotify source options
     p.add('--spotify_username', help='spotify username')
@@ -51,8 +51,8 @@ def get_options():
 
     options = p.parse()
 
-    if 'files' in options.source and not options.files_dir:
-        p.error('use of files source requires files_dir to be set')
+    if 'local' in options.source and not options.local_dir:
+        p.error('use of local source requires local_dir to be set')
 
     spotify_options = (options.spotify_username,
                        options.spotify_client_id,
