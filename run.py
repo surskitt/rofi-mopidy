@@ -29,7 +29,7 @@ def local_handler(opts):
 
     return file_albums
 
-def rofi_handler(music, sources, use_icons, row=0):
+def rofi_handler(music, sources, use_icons=False, row=0):
     r = Rofi()
     keys = {
         'key0': ('Return', 'Add'),
