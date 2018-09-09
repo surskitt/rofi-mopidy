@@ -2,7 +2,6 @@ import os
 from tinytag import TinyTag
 from itertools import groupby
 from operator import itemgetter
-#  import json
 import urllib.parse
 import sys
 
