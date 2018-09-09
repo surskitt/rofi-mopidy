@@ -52,7 +52,7 @@ def mpd_handler(selection, opts, cmd='add'):
     client = MPDClient()
     client.connect(opts.mopidy_host, opts.mopidy_port)
     if 'uri' in selection:
-        client.add(entry['uri'])
+        client.add(selection['uri'])
     else:
         for track in selection['tracks']:
             client.add(track['uri'])
