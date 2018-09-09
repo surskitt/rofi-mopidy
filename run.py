@@ -48,7 +48,7 @@ def rofi_handler(music, sources, use_icons, row=0):
 
     return index, key
 
-def mpd_handler(selection, opts, cmd='add'):
+def mopidy_handler(selection, opts, cmd='add'):
     client = MPDClient()
     client.connect(opts.mopidy_host, opts.mopidy_port)
     if 'uri' in selection:
@@ -89,7 +89,7 @@ def main():
 
     if index > -1:
         selection = music[index]
-        mpd_handler(selection, opts)
+        mopidy_handler(selection, opts)
 
 
 if __name__ == '__main__':
