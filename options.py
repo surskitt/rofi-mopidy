@@ -24,7 +24,7 @@ def get_options():
     p.add('--refresh', '-r', action='store_true', default=False,
           help='refresh album cache')
     p.add('--sorting', required=True,
-          choices=['mtime', 'artist', 'album'], default='mtime',
+          choices=['mtime', 'artist', 'album', 'title'], default='mtime',
           help='key to sort rofi listing on')
     p.add('--use_icons', '-i', action='store_true',
           help='use nerdfont icons in rofi')
@@ -38,9 +38,9 @@ def get_options():
     p.add('--spotify_client_secret', help='spotify secret')
 
     # mopidy options
-    p.add('--mopidy-host', default='localhost',
+    p.add('--mopidy_host', default='localhost',
           help='host that the mopidy server is running at')
-    p.add('--mopidy-port', default=6600, type=int,
+    p.add('--mopidy_port', default=6600, type=int,
           help='port that the mopidy server is running on')
 
     options = p.parse()

@@ -27,6 +27,7 @@ class SpotifyCollector():
 
         return {'artist': artist,
                 'title': title,
+                'album': title,
                 'mtime': mtime,
                 'tracks': tracks,
                 'type': 'spotify',
