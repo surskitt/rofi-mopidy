@@ -56,6 +56,12 @@ def mpd_handler(selection, opts, cmd='add'):
     else:
         for track in selection['tracks']:
             client.add(track['uri'])
+    if cmd == 'insert':
+        count = len(selection.get('tracks') or 'a')
+        status = client.status()
+        next_pos = int(status['song']) + 1
+        pl_len = int(status['playlistlength'])
+        client.move('{}:{}'.format(pl_len - count, pl_len), next_pos)
 
 def main():
     opts = options.get_options()
