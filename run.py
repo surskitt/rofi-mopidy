@@ -34,8 +34,8 @@ def rofi_handler(music, sources, use_icons, row=0):
     keys = {
         'key0': ('Return', 'Add'),
         'key1': ('Ctrl+i', 'Insert'),
-        'key2': ('Alt+Return', 'Add and continue'),
-        'key3': ('Alt+Ctrl+i', 'Insert and continue')
+        'key2': ('Alt+Return', 'Add...'),
+        'key3': ('Alt+Ctrl+i', 'Insert...')
     }
     if len(sources) == 1:
         prompt = sources[0].capitalize()
