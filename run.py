@@ -69,7 +69,7 @@ def main():
     music = [i for s in albums_dict.values() for i in s]
     if opts.mode == 'songs':
         music = [i for s in music for i in s['tracks']]
-    music = sorted(music, key=lambda x: x[opts.sorting])
+    music = sorted(music, key=lambda x: x[opts.sorting], reverse=opts.reverse)
 
     index, key = rofi_handler(music, opts.source)
 

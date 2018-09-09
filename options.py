@@ -26,6 +26,8 @@ def get_options():
     p.add('--sorting', required=True,
           choices=['mtime', 'artist', 'album', 'title'], default='mtime',
           help='key to sort rofi listing on')
+    p.add('--reverse', action='store_true', default=False,
+          help='sort rofi entries in reverse')
     p.add('--use_icons', '-i', action='store_true',
           help='use nerdfont icons in rofi')
 
