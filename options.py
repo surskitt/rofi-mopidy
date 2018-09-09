@@ -39,7 +39,7 @@ def get_options():
 
     # rofi options
     p.add('--no_rofi', action='store_true', default=False,
-          help='don\'t show rofi (only makes sense with -r)')
+          help='don\'t show rofi (only works with -r)')
     p.add('--use_icons', '-i', action='store_true', default=False,
           help='use nerdfont icons in rofi')
 
