@@ -28,8 +28,6 @@ def get_options():
           help='key to sort rofi listing on')
     p.add('--reverse', action='store_true', default=False,
           help='sort rofi entries in reverse')
-    p.add('--use_icons', '-i', action='store_true',
-          help='use nerdfont icons in rofi')
 
     # files source options
     p.add('--files_dir', help='music files directory')
@@ -38,6 +36,12 @@ def get_options():
     p.add('--spotify_username', help='spotify username')
     p.add('--spotify_client_id', help='spotify client id')
     p.add('--spotify_client_secret', help='spotify secret')
+
+    # rofi options
+    p.add('--no_rofi', action='store_true', default=False,
+          help='don\'t show rofi (only makes sense with -r)')
+    p.add('--use_icons', '-i', action='store_true',
+          help='use nerdfont icons in rofi')
 
     # mopidy options
     p.add('--mopidy_host', default='localhost',

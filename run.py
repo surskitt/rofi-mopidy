@@ -62,6 +62,9 @@ def main():
 
         for k, v in albums_dict.items():
             utils.write_albums(opts.cache_dir, k, v)
+
+        if opts.no_rofi:
+            sys.exit()
     else:
         albums_dict = {k: utils.load_albums(opts.cache_dir, k)
                        for k in opts.source}
