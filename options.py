@@ -40,7 +40,7 @@ def get_options():
     # rofi options
     p.add('--no_rofi', action='store_true', default=False,
           help='don\'t show rofi (only makes sense with -r)')
-    p.add('--use_icons', '-i', action='store_true',
+    p.add('--use_icons', '-i', action='store_true', default=False,
           help='use nerdfont icons in rofi')
 
     # mopidy options

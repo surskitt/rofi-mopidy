@@ -29,14 +29,19 @@ def files_handler(opts):
 
     return file_albums
 
-def rofi_handler(music, sources, row=0):
+def rofi_handler(music, sources, use_icons, row=0):
     r = Rofi()
     if len(sources) == 1:
         prompt = sources[0].capitalize()
     else:
         prompt = 'Music'
 
-    rows = ['{} - {}'.format(i['artist'], i['title']) for i in music]
+    if use_icons:
+        icons = {'file': '', 'spotify': ''}
+        rows = ['{} {} - {}'.format(icons[i['type']], i['artist'], i['title'])
+                for i in music]
+    else:
+        rows = ['{} - {}'.format(i['artist'], i['title']) for i in music]
     args = '-i -selected-row {}'.format(row).split()
 
     index, key = r.select(prompt.capitalize(), rows, rofi_args=args)
@@ -74,11 +79,11 @@ def main():
         music = [i for s in music for i in s['tracks']]
     music = sorted(music, key=lambda x: x[opts.sorting], reverse=opts.reverse)
 
-    index, key = rofi_handler(music, opts.source)
+    index, key = rofi_handler(music, opts.source, opts.use_icons)
 
-    selection = music[index]
-
-    mpd_handler(selection, opts)
+    if index > -1:
+        selection = music[index]
+        mpd_handler(selection, opts)
 
 
 if __name__ == '__main__':
