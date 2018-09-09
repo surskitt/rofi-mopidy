@@ -37,7 +37,7 @@ def rofi_handler(music, sources, use_icons, row=0):
         prompt = 'Music'
 
     if use_icons:
-        icons = {'file': '', 'spotify': ''}
+        icons = {'file': '', 'spotify': ''}
         rows = ['{} {} - {}'.format(icons[i['type']], i['artist'], i['title'])
                 for i in music]
     else:
