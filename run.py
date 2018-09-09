@@ -91,9 +91,8 @@ def main():
         music = [i for s in music for i in s['tracks']]
     music = sorted(music, key=lambda x: x[opts.sorting], reverse=opts.reverse)
 
-    show_menu = True
     index = 0
-    while show_menu:
+    while True:
         index, key = rofi_handler(music, opts.source, opts.use_icons, index)
 
         if index > -1:
@@ -104,7 +103,7 @@ def main():
                 mopidy_handler(selection, opts, 'insert')
 
         if key in (-1, 0, 1):
-            show_menu = False
+            break
 
 
 if __name__ == '__main__':
