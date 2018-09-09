@@ -43,13 +43,13 @@ def rofi_handler(music, sources, row=0):
 
     return index, key
 
-def mpd_handler(entry, opts, cmd='add'):
+def mpd_handler(selection, opts, cmd='add'):
     client = MPDClient()
     client.connect(opts.mopidy_host, opts.mopidy_port)
-    if 'uri' in entry:
+    if 'uri' in selection:
         client.add(entry['uri'])
     else:
-        for track in entry['tracks']:
+        for track in selection['tracks']:
             client.add(track['uri'])
 
 def main():
@@ -69,12 +69,13 @@ def main():
     music = [i for s in albums_dict.values() for i in s]
     if opts.mode == 'songs':
         music = [i for s in music for i in s['tracks']]
+    music = sorted(music, key=lambda x: x[opts.sorting])
 
     index, key = rofi_handler(music, opts.source)
 
-    album = albums[index]
+    selection = music[index]
 
-    mpd_handler(album, opts)
+    mpd_handler(selection, opts)
 
 
 if __name__ == '__main__':
