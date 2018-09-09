@@ -29,14 +29,14 @@ def files_handler(opts):
 
     return file_albums
 
-def rofi_handler(albums, sources, row=0):
+def rofi_handler(music, sources, row=0):
     r = Rofi()
     if len(sources) == 1:
         prompt = sources[0].capitalize()
     else:
         prompt = 'Music'
 
-    rows = ['{} - {}'.format(i['artist'], i['album']) for i in albums]
+    rows = ['{} - {}'.format(i['artist'], i['title']) for i in music]
     args = '-i -selected-row {}'.format(row).split()
 
     index, key = r.select(prompt.capitalize(), rows, rofi_args=args)
@@ -66,9 +66,11 @@ def main():
         albums_dict = {k: utils.load_albums(opts.cache_dir, k)
                        for k in opts.source}
 
-    albums = [i for s in albums_dict.values() for i in s]
+    music = [i for s in albums_dict.values() for i in s]
+    if opts.mode == 'songs':
+        music = [i for s in music for i in s['tracks']]
 
-    index, key = rofi_handler(albums, opts.source)
+    index, key = rofi_handler(music, opts.source)
 
     album = albums[index]
 

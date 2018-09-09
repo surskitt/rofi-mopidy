@@ -28,7 +28,7 @@ def song_to_dict(s, f):
 
 def album_to_dict(artist, album, tracks):
     return {'artist': artist,
-            'album': album,
+            'title': album,
             'type': 'file',
             'mtime': max(i['mtime'] for i in tracks),
             'tracks': tracks}

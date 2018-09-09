@@ -19,14 +19,14 @@ class SpotifyCollector():
     def album_to_dict(self, a):
         aa = a['album']
         artist = ', '.join(i['name'] for i in aa['artists'])
-        album = aa['name']
+        title = aa['name']
         mtime = self.__dt_to_mtime(a['added_at'])
-        tracks = [self.track_to_dict(i, artist, album, mtime)
+        tracks = [self.track_to_dict(i, artist, title, mtime)
                   for i in self.__results_gen(aa['tracks'])]
         uri = aa['uri']
 
         return {'artist': artist,
-                'album': album,
+                'title': title,
                 'mtime': mtime,
                 'tracks': tracks,
                 'type': 'spotify',
