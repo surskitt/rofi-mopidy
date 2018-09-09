@@ -15,7 +15,7 @@ def get_options():
 
     # general options
     p.add('--config', '-c', is_config_file=True, help='config file path')
-    p.add('--cache_dir', '-C', default=cache_dir, help='app cache dir')
+    p.add('--cache-dir', '-C', default=cache_dir, help='app cache dir')
     p.add('--source', '-s', action='append', required=True,
           choices=['local', 'spotify'],
           help='different sources to scan/display')
@@ -30,29 +30,29 @@ def get_options():
           help='sort rofi entries in reverse')
 
     # local source options
-    p.add('--local_dir', help='local music directory')
+    p.add('--local-dir', help='local music directory')
 
     # spotify source options
-    p.add('--spotify_username', help='spotify username')
-    p.add('--spotify_client_id', help='spotify client id')
-    p.add('--spotify_client_secret', help='spotify secret')
+    p.add('--spotify-username', help='spotify username')
+    p.add('--spotify-client-id', help='spotify client id')
+    p.add('--spotify-client-secret', help='spotify secret')
 
     # rofi options
-    p.add('--no_rofi', action='store_true', default=False,
+    p.add('--no-rofi', action='store_true', default=False,
           help='don\'t show rofi (only works with -r)')
-    p.add('--use_icons', '-i', action='store_true', default=False,
+    p.add('--use-icons', '-i', action='store_true', default=False,
           help='use nerdfont icons in rofi')
 
     # mopidy options
-    p.add('--mopidy_host', default='localhost',
+    p.add('--mopidy-host', default='localhost',
           help='host that the mopidy server is running at')
-    p.add('--mopidy_port', default=6600, type=int,
+    p.add('--mopidy-port', default=6600, type=int,
           help='port that the mopidy server is running on')
 
     options = p.parse()
 
     if 'local' in options.source and not options.local_dir:
-        p.error('use of local source requires local_dir to be set')
+        p.error('use of local source requires local-dir to be set')
 
     spotify_options = (options.spotify_username,
                        options.spotify_client_id,
