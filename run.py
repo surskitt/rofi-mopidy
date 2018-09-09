@@ -35,6 +35,7 @@ def rofi_handler(music, sources, use_icons, row=0):
         prompt = sources[0].capitalize()
     else:
         prompt = 'Music'
+    args = '-i -selected-row {}'.format(row).split()
 
     if use_icons:
         icons = {'file': '', 'spotify': ''}
@@ -42,9 +43,8 @@ def rofi_handler(music, sources, use_icons, row=0):
                 for i in music]
     else:
         rows = ['{} - {}'.format(i['artist'], i['title']) for i in music]
-    args = '-i -selected-row {}'.format(row).split()
 
-    index, key = r.select(prompt.capitalize(), rows, rofi_args=args)
+    index, key = r.select(prompt, rows, rofi_args=args)
 
     return index, key
 
