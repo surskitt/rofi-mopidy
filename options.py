@@ -37,6 +37,12 @@ def get_options():
     p.add('--spotify_client_id', help='spotify client id')
     p.add('--spotify_client_secret', help='spotify secret')
 
+    # mopidy options
+    p.add('--mopidy-host', default='localhost',
+          help='host that the mopidy server is running at')
+    p.add('--mopidy-port', default=6600, type=int,
+          help='port that the mopidy server is running on')
+
     options = p.parse()
 
     if 'files' in options.source and not options.files_dir:

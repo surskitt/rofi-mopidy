@@ -2,6 +2,10 @@
 
 # python stdlib
 import os
+import sys
+# pip installed
+from rofi import Rofi
+from mpd import MPDClient
 # internal packages
 import options
 import utils
@@ -25,6 +29,29 @@ def files_handler(opts):
 
     return file_albums
 
+def rofi_handler(albums, sources, row=0):
+    r = Rofi()
+    if len(sources) == 1:
+        prompt = sources[0].capitalize()
+    else:
+        prompt = 'Music'
+
+    rows = ['{} - {}'.format(i['artist'], i['album']) for i in albums]
+    args = '-i -selected-row {}'.format(row).split()
+
+    index, key = r.select(prompt.capitalize(), rows, rofi_args=args)
+
+    return index, key
+
+def mpd_handler(entry, opts, cmd='add'):
+    client = MPDClient()
+    client.connect(opts.mopidy_host, opts.mopidy_port)
+    if 'uri' in entry:
+        client.add(entry['uri'])
+    else:
+        for track in entry['tracks']:
+            client.add(track['uri'])
+
 def main():
     opts = options.get_options()
 
@@ -40,6 +67,13 @@ def main():
                        for k in opts.source}
 
     albums = [i for s in albums_dict.values() for i in s]
+
+    index, key = rofi_handler(albums, opts.source)
+
+    album = albums[index]
+
+    mpd_handler(album, opts)
+
 
 if __name__ == '__main__':
     main()
