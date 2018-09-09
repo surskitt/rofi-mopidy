@@ -31,6 +31,12 @@ def files_handler(opts):
 
 def rofi_handler(music, sources, use_icons, row=0):
     r = Rofi()
+    keys = {
+        'key0': ('Return', 'Add'),
+        'key1': ('Ctrl+i', 'Insert'),
+        'key2': ('Alt+Return', 'Add and continue'),
+        'key3': ('Alt+Ctrl+i', 'Insert and continue')
+    }
     if len(sources) == 1:
         prompt = sources[0].capitalize()
     else:
@@ -44,7 +50,7 @@ def rofi_handler(music, sources, use_icons, row=0):
     else:
         rows = ['{} - {}'.format(i['artist'], i['title']) for i in music]
 
-    index, key = r.select(prompt, rows, rofi_args=args)
+    index, key = r.select(prompt, rows, rofi_args=args, **keys)
 
     return index, key
 
@@ -89,7 +95,10 @@ def main():
 
     if index > -1:
         selection = music[index]
-        mopidy_handler(selection, opts)
+        if key in (0, 2):
+            mopidy_handler(selection, opts, 'add')
+        else:
+            mopidy_handler(selection, opts, 'insert')
 
 
 if __name__ == '__main__':
