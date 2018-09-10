@@ -13,6 +13,14 @@ with open("README.md", "rb") as f:
 setup(
     name = "rofi-mopidy",
     packages = ["rofi_mopidy", "rofi_mopidy.collectors", "rofi_mopidy.auth"],
+    install_requires=[
+        'ConfigArgParse',
+        'python-mpd2',
+        'spotipy',
+        'tinytag',
+        'python-rofi'
+    ],
+    dependency_links=['https://github.com/bcbnz/python-rofi.git@d20b3a2ba4ba1b294b002f25a8fb526c5115d0d4#egg=python_rofi'],
     entry_points = {
         "console_scripts": ['rofi-mopidy = rofi_mopidy.rofi_mopidy:main']
         },
