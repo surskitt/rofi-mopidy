@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+__version__ = '0.0.1'
+
 # python stdlib
 import os
 import sys
@@ -7,10 +9,10 @@ import sys
 from rofi import Rofi
 from mpd import MPDClient
 # internal packages
-import options
-import utils
-import collectors
-import auth
+from . import options
+from . import utils
+from . import collectors
+from . import auth
 
 
 def spotify_handler(opts):
