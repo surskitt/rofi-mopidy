@@ -6,8 +6,13 @@ import configargparse
 
 
 def get_options():
+    """ Parse and return command line options using configargparse """
+
+    # use XDG variables if they are set and available to the user
+    # otherwise use sensible defaults
     conf_root = environ.get('XDG_CONFIG_HOME') or '~/.config'
     cache_root = environ.get('XDG_CACHE_HOME') or expanduser('~/.cache')
+    # create default config file and cache dir names using app name
     conf_files = '{}/rofi-mopidy/*.yml'.format(conf_root)
     cache_dir = '{}/rofi-mopidy'.format(cache_root)
 
@@ -51,6 +56,7 @@ def get_options():
 
     options = p.parse()
 
+    # Error if source specific options are not set
     if 'local' in options.source and not options.local_dir:
         p.error('use of local source requires local-dir to be set')
 

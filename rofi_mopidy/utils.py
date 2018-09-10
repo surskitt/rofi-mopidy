@@ -4,6 +4,8 @@ import sys
 
 
 def write_albums(cache_dir, filename, *albums):
+    """ write given albums list using given cache_dir and filename """
+
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
 
@@ -16,6 +18,8 @@ def write_albums(cache_dir, filename, *albums):
 
 
 def load_albums(cache_dir, filename):
+    """ load albums from cache, raising exception if file does not exist  """
+
     iput = '{}/{}.json'.format(cache_dir, filename)
     try:
         with open(iput) as f:
@@ -24,4 +28,5 @@ def load_albums(cache_dir, filename):
         print('ERROR: {} cache not found, use -r to create'.format(filename),
               file=sys.stderr)
         sys.exit(1)
+
     return albums
