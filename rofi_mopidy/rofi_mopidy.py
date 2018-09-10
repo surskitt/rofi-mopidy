@@ -25,11 +25,13 @@ def spotify_handler(opts):
 
     return spotify_albums
 
+
 def local_handler(opts):
     local_dir = os.path.expanduser(opts.local_dir)
     file_albums = collectors.local.collect(local_dir)
 
     return file_albums
+
 
 def rofi_handler(music, sources, use_icons=False, row=0):
     r = Rofi()
@@ -56,6 +58,7 @@ def rofi_handler(music, sources, use_icons=False, row=0):
 
     return index, key
 
+
 def mopidy_handler(selection, opts, cmd='add'):
     client = MPDClient()
     client.connect(opts.mopidy_host, opts.mopidy_port)
@@ -70,6 +73,7 @@ def mopidy_handler(selection, opts, cmd='add'):
         next_pos = int(status['song']) + 1
         pl_len = int(status['playlistlength'])
         client.move('{}:{}'.format(pl_len - count, pl_len), next_pos)
+
 
 def main():
     opts = options.get_options()

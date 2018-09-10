@@ -14,16 +14,18 @@ def listfiles(directory, exts):
                 if any(path.lower().endswith(f) for f in exts):
                     yield path
 
+
 def song_to_dict(s, f):
     return {'artist': s.artist,
             'albumartist': s.albumartist or s.artist,
             'album': s.album,
             'track': int(''.join(i for i in ((s.disc or '') + s.track)
-                     if i.isdigit())[-3:]),
+                         if i.isdigit())[-3:]),
             'title': s.title,
             'uri': 'file://{}'.format(urllib.parse.quote(f)),
             'mtime': os.path.getmtime(f),
             'type': 'file'}
+
 
 def album_to_dict(artist, album, tracks):
     return {'artist': artist,
@@ -33,12 +35,14 @@ def album_to_dict(artist, album, tracks):
             'mtime': max(i['mtime'] for i in tracks),
             'tracks': tracks}
 
+
 def group_songs(sl):
     grouper = itemgetter('albumartist', 'album')
     gb = [(k, list(g)) for k, g in groupby(sorted(sl, key=grouper), grouper)]
     albums = [album_to_dict(ar, al, ts) for (ar, al), ts in gb]
 
     return albums
+
 
 def collect(local_dir):
     musicfiles = listfiles(local_dir, ['flac', 'mp3'])

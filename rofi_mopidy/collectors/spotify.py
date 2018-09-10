@@ -1,9 +1,9 @@
 import time
 
+
 class SpotifyCollector():
     def __init__(self, sp):
         self.sp = sp
-
 
     def __results_gen(self, r):
         while r:

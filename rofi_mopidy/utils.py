@@ -2,6 +2,7 @@ import os
 import json
 import sys
 
+
 def write_albums(cache_dir, filename, *albums):
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
