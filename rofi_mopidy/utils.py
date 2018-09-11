@@ -37,6 +37,7 @@ def load_albums(cache_dir, filename):
 def get_cache_fn(cache_dir, fn):
     """ If fn is a url then return, if filename then prepend dir """
 
+    # if passed filename is the same as basename, then fn is a filename
     if os.path.basename(fn) == fn:
         return os.path.join(cache_dir, fn)
     else:
@@ -46,6 +47,7 @@ def get_cache_fn(cache_dir, fn):
 def download_url(url, fn):
     """ Download given url as given filename """
 
+    # make the destination dir if it doesn't exist
     dest_dir = os.path.dirname(fn)
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
