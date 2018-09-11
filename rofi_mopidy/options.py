@@ -33,6 +33,8 @@ def get_options():
           help='key to sort rofi listing on')
     p.add('--reverse', action='store_true', default=False,
           help='sort rofi entries in reverse')
+    p.add('--album-art', '-a', action='store_true', default=False,
+          help='cache/display album art')
 
     # local source options
     p.add('--local-dir', help='local music directory')
