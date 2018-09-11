@@ -130,25 +130,32 @@ def main():
     # sort our list of albums/songs using key set in options
     music = sorted(music, key=lambda x: x[opts.sorting], reverse=opts.reverse)
 
+    if not opts.args:
+        for i in music:
+            print('{artist} - {title}'.format(**i))
+    else:
+        print('adding {} to mopidy'.format())
+
+
     # index initially set to 0 so first row is shown
-    index = 0
+    #  index = 0
     # continue to show rofi window while continue shortcuts are used
-    while True:
-        index, key = rofi_handler(music, opts.source, opts.use_icons, index)
+    #  while True:
+        #  index, key = rofi_handler(music, opts.source, opts.use_icons, index)
 
-        # if index is -1, user either cancelled or picked an invalid entry
-        if index > -1:
-            selection = music[index]
-            # 0 or 2 = mpd add command, 1 or 3 = mpd insert command
-            if key in (0, 2):
-                mopidy_handler(selection, opts, 'add')
-            else:
-                mopidy_handler(selection, opts, 'insert')
+        #  # if index is -1, user either cancelled or picked an invalid entry
+        #  if index > -1:
+            #  selection = music[index]
+            #  # 0 or 2 = mpd add command, 1 or 3 = mpd insert command
+            #  if key in (0, 2):
+                #  mopidy_handler(selection, opts, 'add')
+            #  else:
+                #  mopidy_handler(selection, opts, 'insert')
 
-        # -1 = user escaped rofi, 0 or 1 = user picked add without continue
-        if key in (-1, 0, 1):
-            # break out of while loop
-            break
+        #  # -1 = user escaped rofi, 0 or 1 = user picked add without continue
+        #  if key in (-1, 0, 1):
+            #  # break out of while loop
+            #  break
 
 
 if __name__ == '__main__':

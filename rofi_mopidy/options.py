@@ -54,6 +54,8 @@ def get_options():
     p.add('--mopidy-port', default=6600, type=int,
           help='port that the mopidy server is running on')
 
+    p.add('args', nargs='*', help='rofi args')
+
     options = p.parse()
 
     # Error if source specific options are not set
