@@ -1,4 +1,5 @@
 import time
+import os
 
 
 class SpotifyCollector():
@@ -31,8 +32,10 @@ class SpotifyCollector():
         artist = ', '.join(i['name'] for i in aa['artists'])
         title = aa['name']
         mtime = self.__dt_to_mtime(a['added_at'])
+        art_url = aa['images'][-1]['url']
+        art_fn = os.path.basename(art_url)
         # use results_gen to page through track pages (for more than 50 tracks)
-        tracks = [self.track_to_dict(i, artist, title, mtime)
+        tracks = [self.track_to_dict(i, artist, title, mtime, art_fn)
                   for i in self.__results_gen(aa['tracks'])]
         uri = aa['uri']
 
@@ -42,9 +45,11 @@ class SpotifyCollector():
                 'mtime': mtime,
                 'tracks': tracks,
                 'type': 'spotify',
-                'uri': uri}
+                'uri': uri,
+                'art_url': art_url,
+                'art_fn': art_fn}
 
-    def track_to_dict(self, t, albumartist, album, mtime):
+    def track_to_dict(self, t, albumartist, album, mtime, art_fn):
         """ use spotify track results to return agnostic track dict
             uses details from parent album """
 
@@ -63,7 +68,8 @@ class SpotifyCollector():
                 'title': title,
                 'uri': uri,
                 'mtime': mtime,
-                'type': 'spotify'}
+                'type': 'spotify',
+                'art_fn': art_fn}
 
     def collect(self):
         """ return list of agnostic album dicts """
