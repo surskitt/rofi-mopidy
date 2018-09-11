@@ -137,7 +137,7 @@ def main():
         for i in music:
             print('{artist} - {title}'.format(**i))
     else:
-        print('adding {} to mopidy'.format())
+        print('adding {} to mopidy'.format(' '.join(opts.args)))
 
 
     # index initially set to 0 so first row is shown
