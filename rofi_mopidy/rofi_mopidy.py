@@ -113,6 +113,8 @@ def main():
         # write each collected list to its cache file
         for k, v in albums_dict.items():
             utils.write_albums(opts.cache_dir, k, v)
+            utils.cache_art(opts.cache_dir, v)
+
 
         # exit once refresh complete if option passed
         if opts.no_rofi:

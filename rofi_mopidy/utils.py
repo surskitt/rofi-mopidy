@@ -1,6 +1,8 @@
 import os
 import json
 import sys
+import urllib.request
+import shutil
 
 
 def write_albums(cache_dir, filename, *albums):
@@ -30,3 +32,34 @@ def load_albums(cache_dir, filename):
         sys.exit(1)
 
     return albums
+
+
+def get_cache_fn(cache_dir, fn):
+    """ If fn is a url then return, if filename then prepend dir """
+
+    if os.path.basename(fn) == fn:
+        return os.path.join(cache_dir, fn)
+    else:
+        return fn
+
+
+def download_url(url, fn):
+    """ Download given url as given filename """
+
+    dest_dir = os.path.dirname(fn)
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+
+    with urllib.request.urlopen(url) as response, open(fn, 'wb') as f:
+        data = response.read()
+        f.write(data)
+
+
+def cache_art(cache_dir, albums):
+    """ download any album art in list to cache dir """
+
+    art_dir = os.path.join(cache_dir, 'art')
+    for a in albums:
+        if 'art_url' in a:
+            fn = get_cache_fn(art_dir, a['art_fn'])
+            download_url(a['art_url'], fn)
