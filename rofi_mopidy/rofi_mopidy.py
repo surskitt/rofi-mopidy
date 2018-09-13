@@ -116,7 +116,6 @@ def main():
             if opts.album_art:
                 utils.cache_art(opts.cache_dir, v)
 
-
         # exit once refresh complete if option passed
         if opts.no_rofi:
             sys.exit()
@@ -135,7 +134,8 @@ def main():
 
     if not opts.args:
         for i in music:
-            print('{artist} - {title}'.format(**i))
+            art_fn = utils.get_cache_fn(opts.cache_dir, i['art_fn'])
+            print('{} - {}\0icon\x1f{}'.format(i['artist'], i['title'], art_fn))
     else:
         print('adding {} to mopidy'.format(' '.join(opts.args)))
 

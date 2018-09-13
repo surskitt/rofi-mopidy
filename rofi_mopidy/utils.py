@@ -40,9 +40,12 @@ def get_cache_fn(cache_dir, fn):
 
     # if passed filename is the same as basename, then fn is a filename
     if os.path.basename(fn) == fn:
-        return os.path.join(cache_dir, 'art', fn)
-    else:
-        return fn
+        fn = os.path.join(cache_dir, 'art', fn)
+
+    if not fn.endswith('.png'):
+        fn += '.png'
+
+    return fn
 
 
 def download_img(url, fn):
