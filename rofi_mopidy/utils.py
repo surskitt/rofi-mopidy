@@ -2,7 +2,8 @@ import os
 import json
 import sys
 import urllib.request
-import shutil
+import io
+from PIL import Image
 
 
 def write_albums(cache_dir, filename, *albums):
@@ -39,12 +40,12 @@ def get_cache_fn(cache_dir, fn):
 
     # if passed filename is the same as basename, then fn is a filename
     if os.path.basename(fn) == fn:
-        return os.path.join(cache_dir, fn)
+        return os.path.join(cache_dir, 'art', fn)
     else:
         return fn
 
 
-def download_url(url, fn):
+def download_img(url, fn):
     """ Download given url as given filename """
 
     # make the destination dir if it doesn't exist
@@ -52,16 +53,20 @@ def download_url(url, fn):
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
 
-    with urllib.request.urlopen(url) as response, open(fn, 'wb') as f:
+    #  with urllib.request.urlopen(url) as response, open(fn, 'wb') as f:
+    with urllib.request.urlopen(url) as response:
         data = response.read()
-        f.write(data)
+
+    # convert image to png if needed and save to file
+    img = Image.open(io.BytesIO(data))
+    rgb_img = img.convert('RGB')
+    rgb_img.save(fn, 'png')
 
 
 def cache_art(cache_dir, albums):
     """ download any album art in list to cache dir """
 
-    art_dir = os.path.join(cache_dir, 'art')
     for a in albums:
         if 'art_url' in a:
-            fn = get_cache_fn(art_dir, a['art_fn'])
-            download_url(a['art_url'], fn)
+            fn = get_cache_fn(cache_dir, a['art_fn'])
+            download_img(a['art_url'], fn)
