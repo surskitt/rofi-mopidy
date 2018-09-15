@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-__version__ = '0.0.4'
-
 # python stdlib
 import os
 import sys
@@ -13,6 +11,8 @@ from . import options
 from . import utils
 from . import collectors
 from . import auth
+
+__version__ = '0.0.4'
 
 
 def spotify_handler(opts):
