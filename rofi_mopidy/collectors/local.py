@@ -30,7 +30,7 @@ def song_to_dict(s, f):
             # create file uri, converting unicode and spaces to punycode
             'uri': 'file://{}'.format(urllib.parse.quote(f)),
             'mtime': os.path.getmtime(f),
-            'type': 'file'}
+            'icon': ''}
 
 
 def album_to_dict(artist, album, tracks):
@@ -39,7 +39,7 @@ def album_to_dict(artist, album, tracks):
     return {'artist': artist,
             'title': album,
             'album': album,
-            'type': 'file',
+            'icon': '',
             'mtime': max(i['mtime'] for i in tracks),
             'tracks': tracks}
 

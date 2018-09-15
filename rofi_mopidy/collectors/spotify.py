@@ -44,7 +44,7 @@ class SpotifyCollector():
                 'album': title,
                 'mtime': mtime,
                 'tracks': tracks,
-                'type': 'spotify',
+                'icon': '',
                 'uri': uri,
                 'art_url': art_url,
                 'art_fn': art_fn}
@@ -68,7 +68,7 @@ class SpotifyCollector():
                 'title': title,
                 'uri': uri,
                 'mtime': mtime,
-                'type': 'spotify',
+                'icon': '',
                 'art_fn': art_fn}
 
     def collect(self):

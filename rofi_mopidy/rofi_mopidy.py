@@ -40,7 +40,7 @@ def local_handler(opts):
     return file_albums
 
 
-def rofi_handler(music, sources, use_icons=False, row=0):
+def rofi_handler_old(music, sources, use_icons=False, row=0):
     """ Handle rofi using passed music list and display options """
 
     r = Rofi()
@@ -71,6 +71,24 @@ def rofi_handler(music, sources, use_icons=False, row=0):
     index, key = r.select(prompt, rows, rofi_args=args, **keys)
 
     return index, key
+
+
+def rofi_handler(music, opts):
+    if len(opts.source) == 1:
+        prompt = opts.source[0].capitalize()
+    else:
+        prompt = 'Music'
+    yield '\x00prompt\x1f{}'.format(prompt)
+
+    fields = [
+        ('{icon} ', opts.use_icons),
+        ('{artist} - {title}', True),
+        ('\0icon\x1f{art_fn}', opts.album_art)
+    ]
+    line_template = ''.join(a for a, b in fields if b)
+    for i in music:
+        i['art_fn'] = utils.get_cache_img(opts.cache_dir, i['art_fn'])
+        yield line_template.format(**i)
 
 
 def mopidy_handler(selection, opts, cmd='add'):
@@ -133,11 +151,10 @@ def main():
     music = sorted(music, key=lambda x: x[opts.sorting], reverse=opts.reverse)
 
     if not opts.args:
-        for i in music:
-            art_fn = utils.get_cache_img(opts.cache_dir, i['art_fn'])
-            print('{artist} - {title}\0icon\x1f{0}'.format(art_fn, **i))
+        for i in rofi_handler(music, opts):
+            print(i)
     else:
-        print('adding {} to mopidy'.format(' '.join(opts.args)))
+        print(opts.args, file=sys.stderr)
 
 
     # index initially set to 0 so first row is shown
