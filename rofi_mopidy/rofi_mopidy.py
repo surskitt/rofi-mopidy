@@ -134,8 +134,8 @@ def main():
 
     if not opts.args:
         for i in music:
-            art_fn = utils.get_cache_fn(opts.cache_dir, i['art_fn'])
-            print('{} - {}\0icon\x1f{}'.format(i['artist'], i['title'], art_fn))
+            art_fn = utils.get_cache_img(opts.cache_dir, i['art_fn'])
+            print('{artist} - {title}\0icon\x1f{0}'.format(art_fn, **i))
     else:
         print('adding {} to mopidy'.format(' '.join(opts.args)))
 
